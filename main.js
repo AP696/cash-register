@@ -1,97 +1,124 @@
 // YOUR CODE
-const cashRegister = (price, cash, cid) => {
+function cashRegister(price, cash, cid) {
     let changeDue = cash - price;
+    let totalCashInDrawer = 0;
+    
+    for (let i = 0; i < cid.length; i++) {
+      totalCashInDrawer += cid[i][1];
+    }
+    
+    if (changeDue > totalCashInDrawer) {
+      return {status: "INSUFFICIENT_FUNDS", change: []};
+    }
+    
+    if (changeDue === totalCashInDrawer) {
+      return {status: "CLOSED", change: cid};
+    }
+    
     let change = [];
-    let cidTotal = 0;
-    let obj = {};
-
-    const currency = [
-        { name: "ONE HUNDRED", value: 10000 },
-        { name: "TWENTY", value: 2000 },
-        { name: "TEN", value: 1000 },
-        { name: "FIVE", value: 500 },
-        { name: "ONE", value: 100 },
-        { name: "QUARTER", value: 25 },
-        { name: "DIME", value: 10 },
-        { name: "NICKLE", value: 5 },
-        { name: "PENNY", value: 1 }
-    ];
-
-    cid.forEach((unit) => {
-        cidTotal += unit[1]
-    })
-
-    // Return "Closed" if total cash in draw is equal to change due
-    if (cidTotal === changeDue) {
-        return { status: "CLOSED", change: cid }
+    let values = {
+      "PENNY": 0.01,
+      "NICKEL": 0.05,
+      "DIME": 0.1,
+      "QUARTER": 0.25,
+      "ONE": 1,
+      "FIVE": 5,
+      "TEN": 10,
+      "TWENTY": 20,
+      "ONE HUNDRED": 100
     };
 
-    //Return "INCORRECT_PAYMENT" if cash is less than the price
-    if (changeDue < 0) {
-        return { status: "INCORRECT_PAYMENT", change: [] };
+    if (cash < price) {
+        return {status: "INCORRECT_PAYMENT", change: change};
     }
-
-    // Return "INSUFFICIENT FUNDS" if cid is less than the change due or if you cannot return the exact change
-
-    if (cidTotal < changeDue) {
-        return { status: "INSUFFICIENT FUNDS", change: [] };
-    }
-
-    //Calculate change in drawer at one particular time
-
-    let available = cid.reduce((acc, billType) =>{
-        return acc += billType[1];
-    },0);
-    available = available.toFixed(2);
-
-    // if cash is greater than price, give change back
-            
-        for (let i = cid.length - 1; i >= 0; i--) {
-            let currencySize = cid[i][0];
-            let currencyAmount = cid[i][1];
-            let cidValue = currencyAmount * 100;
-
-            for (let currencyValue = 0; currencyValue < currency.length; currencyValue++) {
-                if (currencyValue > cidValue) {
-                    return currencyValue;
-                } else {
-                    return currencyValue;
-                }
-            } // if it is greater than, we continue iterating, then stop when it is greater than or equal to, then return that value with the correct amount of change needed
-            
-            while (changeDue > currencySize) {
-                changeDue -= currencyAmount;
-                available -= currencyAmount;
-                
-            }
-            change.push(currencySize, currencyAmount);
+    
+    for (let i = cid.length - 1; i >= 0; i--) {
+      let coinName = cid[i][0];
+      let coinValue = values[coinName];
+      let coinTotal = cid[i][1];
+      let coinAmount = 0;
+      
+      if (changeDue >= coinValue) {
+        while (coinAmount + coinValue <= coinTotal && changeDue >= coinValue) {
+          coinAmount += coinValue;
+          changeDue -= coinValue;
+          changeDue = Math.round(changeDue * 100) / 100;
         }
-
-        
-    
-
-
-
-
-
-    // if (value > 0) {
-    //     change.push([unit.name, value]);
-    // }
-    
-
-
-    // Return "INSUFFICIENT_FUNDS" if change can't be made with available cash in draw
-    if ( changeDue > available) {
-        return { status: "INSUFFICIENT_FUNDS", change: []};
+      }
+      
+      if (coinAmount > 0) {
+        change.push([coinName, coinAmount]);
+      }
     }
-
-    //Return change 
-    return { status: "OPEN", change: change };
-}
+    
+    if (changeDue > 0) {
+      return {status: "INSUFFICIENT_FUNDS", change: []};
+    }
+    
+    return {status: "OPEN", change: change.reverse()};
+    function cashRegister(price, cash, cid) {
+        let changeDue = cash - price;
+        let totalCashInDrawer = 0;
+        
+        for (let i = 0; i < cid.length; i++) {
+          totalCashInDrawer += cid[i][1];
+        }
+        
+        if (changeDue > totalCashInDrawer) {
+          return {status: "INSUFFICIENT_FUNDS", change: []};
+        }
+        
+        if (changeDue === totalCashInDrawer) {
+          return {status: "CLOSED", change: cid};
+        }
+        
+        let change = [];
+        let values = {
+          "PENNY": 0.01,
+          "NICKEL": 0.05,
+          "DIME": 0.1,
+          "QUARTER": 0.25,
+          "ONE": 1,
+          "FIVE": 5,
+          "TEN": 10,
+          "TWENTY": 20,
+          "ONE HUNDRED": 100
+        };
+    
+        if (cash < price) {
+            return {status: "INCORRECT_PAYMENT", change: change};
+        }
+        
+        for (let i = cid.length - 1; i >= 0; i--) {
+          let coinName = cid[i][0];
+          let coinValue = values[coinName];
+          let coinTotal = cid[i][1];
+          let coinAmount = 0;
+          
+          if (changeDue >= coinValue) {
+            while (coinAmount + coinValue <= coinTotal && changeDue >= coinValue) {
+              coinAmount += coinValue;
+              changeDue -= coinValue;
+              changeDue = Math.round(changeDue * 100) / 100;
+            }
+          }
+          
+          if (coinAmount > 0) {
+            change.push([coinName, coinAmount]);
+          }
+        }
+        
+        if (changeDue > 0) {
+          return {status: "INSUFFICIENT_FUNDS", change: []};
+        }
+        
+        return {status: "OPEN", change: change.reverse()};
+      }
+    
 
 
 // EXAMPLE INVOCATION, so you can `console.log` the outputs
-console.log(cashRegister(20, 30, [
+console.log(cashRegister(3.26, 100, [
     ["PENNY", 1.01],
     ["NICKEL", 2.05],
     ["DIME", 3.1],
