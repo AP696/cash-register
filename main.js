@@ -1,4 +1,8 @@
+
 // YOUR CODE
+
+
+
 const cashRegister = (price, cash, cid) => {
     let changeDue = cash - price;
     let change = [];
@@ -20,6 +24,10 @@ const cashRegister = (price, cash, cid) => {
     cid.forEach((unit) => {
         cidTotal += unit[1]
     })
+    const available = cid.reduce((acc, billType) => {
+        return acc + billType[1]
+    }, 0)
+    console.log(available)
 
     // Return "Closed" if total cash in draw is equal to change due
     if (cidTotal === changeDue) {
@@ -33,7 +41,7 @@ const cashRegister = (price, cash, cid) => {
 
     // Return "INSUFFICIENT FUNDS" if cid is less than the change due or if you cannot return the exact change
 
-    if (cidtotal < changeDue) {
+    if (cidTotal < changeDue) {
         return { status: "INSUFFICIENT FUNDS", change: [] };
     }
 
@@ -83,6 +91,6 @@ cashRegister(21.5, 20, [
     ["TEN", 20],
     ["TWENTY", 60],
     ["ONE HUNDRED", 100]
-]);
+])
 
 // DO NOT EDIT BELOW
