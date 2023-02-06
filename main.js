@@ -1,13 +1,7 @@
-
-// YOUR CODE
-
-
-
 const cashRegister = (price, cash, cid) => {
     let changeDue = cash - price;
     let change = [];
     let cidTotal = 0;
-    let obj = {};
 
     const currency = [
         { name: "ONE HUNDRED", value: 100.0 },
@@ -18,7 +12,7 @@ const cashRegister = (price, cash, cid) => {
         { name: "QUARTER", value: 0.25 },
         { name: "DIME", value: 0.1 },
         { name: "NICKLE", value: 0.05 },
-        { name: "PENNY", value: 0.01 }
+        // { name: "PENNY", value: 0.01 }
     ];
 
     cid.forEach((unit) => {
