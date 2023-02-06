@@ -115,7 +115,11 @@ function cashRegister(price, cash, cid) {
         return {status: "OPEN", change: change.reverse()};
       }
     
+<<<<<<< HEAD
 
+=======
+    }
+>>>>>>> 00251d72c0ec9103483fdf859a96915122a3a73b
 
 // EXAMPLE INVOCATION, so you can `console.log` the outputs
 console.log(cashRegister(3.26, 100, [
@@ -129,5 +133,6 @@ console.log(cashRegister(3.26, 100, [
     ["TWENTY", 60],
     ["ONE HUNDRED", 100]
 ]));
+
 
 // DO NOT EDIT BELOW
